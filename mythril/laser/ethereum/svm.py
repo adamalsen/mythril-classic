@@ -216,7 +216,10 @@ class LaserEVM:
             )
 
         except VmException as e:
-            transaction, return_global_state = global_state.transaction_stack.pop()
+            try:
+                transaction, return_global_state = global_state.transaction_stack.pop()
+            except IndexError:
+                transaction, return_global_state = (None, None)
 
             if return_global_state is None:
                 # In this case we don't put an unmodified world state in the open_states list Since in the case of an
